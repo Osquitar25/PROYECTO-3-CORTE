@@ -2,6 +2,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Simular {
+
     String RESET = "\u001B[0m";
     String ROJO = "\u001B[31m";
     String VERDE = "\u001B[32m";
@@ -10,21 +11,61 @@ public class Simular {
     String AMARILLO = "\u001B[33m";
 
     protected boolean frenos;
+    protected boolean cinturon;
     protected boolean volante;
     protected boolean luces;
     protected double lmgases;
     protected double labrado;
+    protected boolean bateria;
+    protected boolean pito;
+    protected boolean limpiabri;
 
 
     public Simular() {
     }
 
-    public Simular(boolean frenos, double labrado, double lmgases, boolean luces, boolean volante) {
+    public Simular(boolean bateria, boolean cinturon, boolean frenos, double labrado, boolean limpiabri, double lmgases, boolean luces, boolean pito, boolean volante) {
+        this.bateria = bateria;
+        this.cinturon = cinturon;
         this.frenos = frenos;
         this.labrado = labrado;
+        this.limpiabri = limpiabri;
         this.lmgases = lmgases;
         this.luces = luces;
+        this.pito = pito;
         this.volante = volante;
+    }
+
+    public boolean isPito() {
+        return pito;
+    }
+
+    public void setPito(boolean pito) {
+        this.pito = pito;
+    }
+
+    public boolean isLimpiabri() {
+        return limpiabri;
+    }
+
+    public void setLimpiabri(boolean limpiabri) {
+        this.limpiabri = limpiabri;
+    }
+
+    public boolean isBateria() {
+        return bateria;
+    }
+
+    public void setBateria(boolean bateria) {
+        this.bateria = bateria;
+    }
+
+    public boolean isCinturon() {
+        return cinturon;
+    }
+
+    public void setCinturon(boolean cinturon) {
+        this.cinturon = cinturon;
     }
 
     public boolean isFrenos() {
@@ -66,8 +107,10 @@ public class Simular {
     public void setVolante(boolean volante) {
         this.volante = volante;
     }
-    public void revisarVehiculos(Scanner scanner){
-        int rtaf,rtav,rtal,rtal2;
+    public void revisarVehiculos(Scanner scanner,int tipo){
+        int rtaf,rtav,rtal,rtal2,rtacin,rtabate, rtapito, rtalimpia;
+
+
         System.out.println(AMARILLO+"""
                 Sus frenos estan en buen estado
                 1)si
@@ -79,16 +122,7 @@ public class Simular {
         }else {
             frenos=false;
         }
-        System.out.println(AMARILLO+"""
-                El volante regresa a su posicion tras una curva
-                1)si
-                2)no"""+RESET);
-        rtav=scanner.nextInt();
-        if (rtav==1){
-            volante=true;
-        }else {
-            volante=false;
-        }
+
         System.out.println(AMARILLO+"""
                 Todas las luces encienden
                 1)si
@@ -123,9 +157,62 @@ public class Simular {
         }else {
             System.out.println(ROJO+"❌❌❌No cumple con el minimo del labrado❌❌❌"+RESET);
         }
+        System.out.println("""
+                ¿El claxon funciona correctamente?
+                1)SI
+                2)NO""");
+        rtapito=scanner.nextInt();
+        if (rtapito==1){
+            pito=true;
+        }else {
+            pito=false;
+        }
+        if (tipo==1 || tipo==3){
+            System.out.println(AMARILLO+"""
+                    Su volante gira correctamente
+                    1)SI
+                    2)NO"""+RESET);
+            rtav= scanner.nextInt();
+            if (rtav==1){
+                volante=true;
+            }else {
+                volante=false;
+            }
+            System.out.println("""
+                    ¿Sus cinturones se encuentran en buen estado y funcionan correctamente?
+                    1)SI
+                    2)NO""");
+            rtacin=scanner.nextInt();
+            if (rtacin==1){
+                cinturon=true;
+            }else {
+                cinturon=false;
+            }
+            System.out.println("""
+                    ¿La bateria no presenta sulfatacion y esta bien sujeta?
+                    1)SI
+                    2)NO""");
+            rtabate=scanner.nextInt();
+            if (rtabate==1){
+                bateria=true;
+            }else {
+                bateria=false;
+            }
+            System.out.println("""
+                    ¿Los limpiabrisas funcionan correctamente?
+                    1)SI
+                    2)NO""");
+            rtalimpia=scanner.nextInt();
+            if (rtalimpia==1){
+                limpiabri=true;
+            }else {
+                limpiabri=false;
+            }
+        }
     }
+
     public boolean siEsAprobado (){
-        return frenos && volante && luces && lmgases<=1.5 && labrado>=1.6;
+        return frenos && volante && luces && lmgases<=1.5 && labrado>=1.6 && cinturon && bateria && pito && limpiabri;
     }
 
     @Override

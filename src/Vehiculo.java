@@ -1,10 +1,12 @@
-public class Vehiculo {
+public abstract class Vehiculo {
 
     protected String Marca;
     protected String Modelo;
     protected int Año;
     protected String Placa;
     protected Simular rtarevision;
+    protected int tipo;
+
 
     public Vehiculo() {
     }
@@ -14,6 +16,9 @@ public class Vehiculo {
         Marca = marca;
         Modelo = modelo;
         Placa = placa;
+    }
+    public int tipo(){
+        return tipo;
     }
 
     public int getAño() {
@@ -58,12 +63,11 @@ public class Vehiculo {
 
     @Override
     public String toString() {
-        return "Vehiculo{" +
-                "Año=" + Año +
-                ", Marca='" + Marca + '\'' +
-                ", Modelo='" + Modelo + '\'' +
-                ", Placa='" + Placa + '\'' +
-                ", rtarevision=" + rtarevision +
-                '}';
+        return "VEHICULO" +
+                "\n Año =" + Año +
+                "\n Marca =" + Marca +
+                "\n Modelo =" + Modelo +
+                "\n Placa =" + Placa +
+                "\n rtarevision =" + rtarevision;
     }
 }

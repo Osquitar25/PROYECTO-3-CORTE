@@ -17,7 +17,8 @@ public class Main {
         Scanner teclado=new Scanner(System.in);
         List<Vehiculo>listvehi=new ArrayList<>();
 
-        int opc;
+        boolean entradaopc=false;
+        int opc=0;
         do {
             System.out.println(MORADO+ """
                     KaOs Motors 🏎💨
@@ -28,8 +29,18 @@ public class Main {
                 3)SIMULAR TECNO
                 4)GENERAR RECIBO
                 5)SALIR"""+RESET);
-            opc= teclado.nextInt();
 
+           if (teclado.hasNextInt()){
+               opc= teclado.nextInt();
+               if (opc==1 || opc==2 || opc==3 || opc==4 || opc==5){
+                   entradaopc=true;
+               }else {
+                   System.out.println(ROJO+"***OPCION INCORRECTA***"+RESET);
+               }
+           }else {
+               System.out.println(ROJO+"***INGRESE UN NUMERO***"+RESET);
+               teclado.next();
+           }
             switch (opc){
                 case 1->{
 
@@ -65,6 +76,7 @@ public class Main {
                     }else {
                         System.out.println(ROJO+"OPCION NO VALIDA"+RESET);
                     }
+                    break;
                 }
                 case 2->{
                     String placa;
@@ -75,6 +87,7 @@ public class Main {
                             System.out.println(vehiculo);
                         }
                     }
+                    break;
                 }
                 case 3->{
                     Taller taller = new Taller();
@@ -90,10 +103,10 @@ public class Main {
                         if (vehiculo.getPlaca().equals(placaa)){
                             placaencontrada=true;
 
-                            simular.revisarVehiculos(teclado);
+                            simular.revisarVehiculos(teclado,vehiculo.tipo());
                             vehiculo.setRtarevision(simular);
                             if (simular.siEsAprobado()){
-                                System.out.println(VERDE+"✅✅✅El vehiculo es aproado✅✅✅"+RESET);
+                                System.out.println(VERDE+"✅✅✅El vehiculo es aprobado✅✅✅"+RESET);
                             }else {
                                 System.out.println(ROJO+"❌❌❌El vehiculo no es aprobado❌❌❌"+RESET);
                             }
@@ -108,13 +121,17 @@ public class Main {
                             taller.revisarVehiculos(teclado);
                         }
                     }
+                    break;
                 }
                 case 4->{
 
                     String pla;
-                    int rta;
+                    int rta,rta2;
                     boolean placa=false;
                     Taller taller=new Taller();
+                    Carro carro=new Carro();
+                    Moto moto=new Moto();
+                    Camion camion=new Camion();
 
                     System.out.println(MORADO+"""
                             Desea generar el recibo con:
@@ -122,47 +139,119 @@ public class Main {
                             2)Simulacion y arreglos en el taller"""+RESET);
                     rta=teclado.nextInt();
 
+                    System.out.println("""
+                        Digite el tipo de vehiculo 
+                        1)CARRO 🚗
+                        2)MOTO 🏍
+                        3)CAMION 🚚""");
+                    rta2=teclado.nextInt();
+
                     System.out.println(MORADO+"Digite la placa "+RESET);
                     pla=teclado.next();
 
+                    System.out.println(MORADO+"Su simulacion de tecno es la siguiente"+RESET);
                     if (rta==1){
-                        System.out.println(MORADO+"""
-                                KaOs Motors 🏎💨
-                    🏁🛠 " Si llego en grúa, se va rugiendo " 🛠🏁
-                    """+RESET);
-                        System.out.println(MORADO+"Sus simulacion de tecno es la siguiente"+RESET);
                         for (Vehiculo vehiculo: listvehi){
                             if (vehiculo.getPlaca().equals(pla)){
-                                Simular simular = vehiculo.getRtarevision();
-                                placa=true;
-                                taller.setFrenos(simular.isFrenos());
-                                taller.setVolante(simular.isVolante());
-                                taller.setLuces(simular.isLuces());
-                                taller.setLmgases(simular.getLmgases());
-                                taller.setLabrado(simular.getLabrado());
-                                taller.revisarVehiculos(teclado);
+                                if (rta2==1 && vehiculo instanceof Carro || rta2==2 && vehiculo instanceof Moto || rta2==3 && vehiculo instanceof Camion){
+                                    System.out.println(MORADO+"""
+                                KaOs Motors 🏎
+                                🏁🛠 " Si llego en grúa, se va rugiendo " 🛠🏁"""+RESET);
+                                    Simular simular = vehiculo.getRtarevision();
+                                    if (simular==null){
+                                        System.out.println("No hay tecno de ese vehiculo");
+                                        placa=true;
+                                        break;
+                                    }
+                                    placa=true;
+                                    taller.setFrenos(simular.isFrenos());
+                                    taller.setVolante(simular.isVolante());
+                                    taller.setLuces(simular.isLuces());
+                                    taller.setLmgases(simular.getLmgases());
+                                    taller.setLabrado(simular.getLabrado());
+                                    taller.revisarVehiculos(teclado);
+                                    if (rta2==1){
+                                        System.out.println("\tEl precio de su tecno es: "+carro.getPctecno()+"\t");
+                                    } else if (rta2==2) {
+                                        System.out.println("El precio de su tecno es: "+moto.getPctecno());
+                                    }else {
+                                        System.out.println("El precio de su tecno es: "+camion.getPctecno());
+                                    }
+                                }else {
+                                    System.out.println("La placa se encontro pero no corresponde al tipo de vehiculo ");
+                                    placa=true;
+                                }
                             }
                         }
-                        System.out.println(MORADO+"PRECIO FINAL:     200.000"+RESET);
+                        if (!placa){
+                            System.out.println("Placa no escontrada");
+                        }
                     }else if (rta==2){
                         for (Vehiculo vehiculo: listvehi){
-                        if (vehiculo.getPlaca().equals(pla)){
-                            Simular simular = vehiculo.getRtarevision();
-                            placa=true;
-                            taller.setFrenos(simular.isFrenos());
-                            taller.setVolante(simular.isVolante());
-                            taller.setLuces(simular.isLuces());
-                            taller.setLmgases(simular.getLmgases());
-                            taller.setLabrado(simular.getLabrado());
-                            taller.revisarVehiculos(teclado);
+                            if (vehiculo.getPlaca().equals(pla)){
+                                if (rta2==1 && vehiculo instanceof Carro || rta2==2 && vehiculo instanceof Moto || rta2==3 && vehiculo instanceof Camion){
+
+                                    System.out.println(MORADO+"""
+                                KaOs Motors 🏎
+                                🏁🛠 " Si llego en grúa, se va rugiendo " 🛠🏁"""+RESET);
+                                    Simular simular = vehiculo.getRtarevision();
+                                    if (simular==null){
+                                        System.out.println("No hay tecno de este vehiculo");
+                                        placa=true;
+                                        break;
+                                    }
+                                    placa=true;
+                                    taller.setFrenos(simular.isFrenos());
+                                    taller.setVolante(simular.isVolante());
+                                    taller.setLuces(simular.isLuces());
+                                    taller.setLmgases(simular.getLmgases());
+                                    taller.setLabrado(simular.getLabrado());
+                                    taller.costos();
+                                    if (rta2==1){
+                                        double pctecno=0;
+                                        double pccarro=0;
+
+                                        pctecno=carro.getPctecno();
+                                        pccarro=pctecno+taller.total();
+
+                                        System.out.println("\tEl precio de su tecno es: "+carro.getPctecno()+"\t");
+                                        System.out.println("\tEl precio total es: "+pccarro+"\t");
+
+                                    } else if (rta2==2) {
+                                        double pctecno=0;
+                                        double pcmoto=0;
+
+                                        pctecno=moto.getPctecno();
+                                        pcmoto=pctecno+taller.total();
+                                        System.out.println("El precio de su tecno es: "+moto.getPctecno());
+                                        System.out.println("El precio total es: "+pcmoto);
+
+                                    }else {
+                                        double pctecno=0;
+                                        double pccamion=0;
+
+                                        pctecno=camion.getPctecno();
+                                        pccamion=pctecno+taller.total();
+                                        System.out.println("El precio de su tecno es: "+camion.getPctecno());
+                                        System.out.println("El precio total es: "+pccamion);
+
+                                        break;
+                                    }
+                                }else {
+                                    System.out.println("La placa se encontro pero no corresponde al tipo de vehiculo ");
+                                    placa=true;
+                                    break;
+                                }
+                            }
                         }
+                    }if (!placa){
+                        System.out.println("Placa no encontrada");
                     }
-
-
-                    }
+                    break;
                 }
                 case 5->{
                     System.out.println(MORADO+ "🏁🛠 SIGUE RUGIENDO CON KaOs 🛠🏁 " +RESET);
+                    break;
                 }
             }
         }while (opc!=5);
