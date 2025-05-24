@@ -8,6 +8,9 @@ public class Taller extends Simular{
     private double stmagases=5000;
     private double stmaneumaticos=5000;
     private double stmalimpiabrisas=5000;
+    private double stmaclaxon=5000;
+    private double bateria=5000;
+    private double cinturon=5000;
 
     String RESET = "\u001B[0m";
     String ROJO = "\u001B[31m";
@@ -180,6 +183,18 @@ public class Taller extends Simular{
         if (labrado<=1.6){
             System.out.println("El arreglo de sus neumaticos sale por: "+stmaneumaticos);
         }
+        if (!isLimpiabri()){
+            System.out.println("El arreglo de los limpiabrisas sale por: "+stmalimpiabrisas);
+        }
+        if (!isPito()){
+            System.out.println("El arreglo del claxon sale por: "+stmaclaxon);
+        }
+        if (!isBateria()){
+            System.out.println("El arreglo de la ateria sale por: "+bateria);
+        }
+        if (!isCinturon()){
+            System.out.println("El arreglo del cinturon sale por: "+cinturon);
+        }
     }
     public double total(){
         double total = 0;
@@ -197,6 +212,18 @@ public class Taller extends Simular{
         }
         if (labrado<=1.6){
             total=total+stmaneumaticos;
+        }
+        if (!isCinturon()){
+            total=total+cinturon;
+        }
+        if (!isBateria()){
+            total=total+bateria;
+        }
+        if (!isPito()){
+            total=total+stmaclaxon;
+        }
+        if (!isLimpiabri()){
+            total=total+stmalimpiabrisas;
         }
         System.out.println("\tEl valor total del taller es: "+total+"\t");
         return total;
